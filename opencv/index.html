@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Testing OpenCV.js</title>
+</head>
+
+<body>
+    <h2>Hello OpenCV.js</h2>
+    <p id="status">OpenCV.js is loading...</p>
+    <div>
+        <div class="inputoutput">
+            <div class="caption"> <input type="file" id="fileInput" name="file" /></div>
+            <img id="imageSrc" alt="No Image" />
+
+        </div>
+        <button type="button" id="graybutton" class="btn btn-primary">Grayscale</button>
+        <button type="button" id="blur" class="btn btn-primary">Blur</button>
+        <button type="button" id="edges" class="btn btn-primary">Edges</button>
+        <div class="inputoutput">
+            <canvas id="canvasOutput"></canvas>
+            <div class="caption"></div>
+        </div>
+
+
+    </div>
+    <script type="text/javascript">
+        let imgElement = document.getElementById('imageSrc');
+        let inputElement = document.getElementById('fileInput');
+        inputElement.addEventListener('change', (e) => {
+            imgElement.src = URL.createObjectURL(e.target.files[0]);
+        }, false);
+        imgElement.onload = function () {
+
+        };
+        function onOpenCvReady() {
+            document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+        }
+
+        document.getElementById('blur').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+
+            let src = cv.imread('imageSrc');
+            let dst = new cv.Mat();
+            let ksize = new cv.Size(3, 3);
+            let anchor = new cv.Point(-1, -1);
+            // You can try more different parameters
+            cv.blur(src, dst, ksize, anchor, cv.BORDER_DEFAULT);
+            // cv.boxFilter(src, dst, -1, ksize, anchor, true, cv.BORDER_DEFAULT)
+            cv.imshow('canvasOutput', dst);
+            src.delete(); dst.delete();
+
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+
+        document.getElementById('edges').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+
+            let src = cv.imread('imageSrc');
+            let dst = new cv.Mat();
+            cv.cvtColor(src, src, cv.COLOR_RGB2GRAY, 0);
+            // You can try more different parameters
+            cv.Canny(src, dst, 50, 100, 3, false);
+            cv.imshow('canvasOutput', dst);
+            src.delete(); dst.delete();
+
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+
+
+        document.getElementById('graybutton').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+
+            let src = cv.imread('imageSrc');
+            let dst = new cv.Mat();
+            // You can try more different parameters
+            cv.cvtColor(src, dst, cv.COLOR_RGB2GRAY, 0);
+            cv.imshow('canvasOutput', dst);
+            src.delete(); dst.delete();
+
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+    </script>
+    <script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+</body>
+
+</html>

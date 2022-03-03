@@ -1,0 +1,12 @@
+Testing TensorFlow.js project
+
+To be able to load the model from local file, bypassing CORS requirements a small python script must be runned to  
+generate a http server on the file folder.
+
+Inside ./tensorflowjs just run:  
+
+python simple_cors_server.py
+
+And the model should be available on http://localhost:8003/model.json  
+
+So just open index.html in your favourite browser and check the console logs

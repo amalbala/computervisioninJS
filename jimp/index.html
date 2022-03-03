@@ -1,0 +1,102 @@
+<body>
+    <h2>Hello JIMP</h2>
+    <div>
+
+        <button type="button" id="randomimg" class="btn btn-primary">Random Image</button>
+        <button type="button" id="gray" class="btn btn-primary">Grayscale</button>
+        <button type="button" id="blur" class="btn btn-primary">Blur</button>
+        <button type="button" id="sepia" class="btn btn-primary">Sepia</button>
+        <div class="inputoutput">
+            <img id='imagetest' src="" alt="Image Place Holder" width="500" height="600">
+        </div>
+
+
+    </div>
+    <script src="https://cdn.rawgit.com/oliver-moran/jimp/v0.2.27/browser/lib/jimp.min.js"></script>
+    <script>
+        document.getElementById('randomimg').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+            Jimp.read('https://picsum.photos/400/400')
+                .then(birds => {
+                    return birds
+                        .resize(400, 400) // resize
+                        .quality(60) // set JPEG quality
+                        .getBase64(Jimp.MIME_JPEG, function (err, src) {
+                            document.getElementById("imagetest").src = src
+
+                        });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+
+        document.getElementById('blur').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+            Jimp.read(document.getElementById("imagetest").src)
+                .then(image => {
+                    return image
+                        .blur(5) // resize
+                        .quality(60) // set JPEG quality
+                        .getBase64(Jimp.MIME_JPEG, function (err, src) {
+                            document.getElementById("imagetest").src = src
+
+                        });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+
+
+
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+
+        document.getElementById('gray').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+            Jimp.read(document.getElementById("imagetest").src)
+                .then(image => {
+                    return image
+                        .grayscale() // resize
+                        .quality(60) // set JPEG quality
+                        .getBase64(Jimp.MIME_JPEG, function (err, src) {
+                            document.getElementById("imagetest").src = src
+
+                        });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+
+        document.getElementById('sepia').onclick = function () {
+            this.disabled = true;
+            document.body.classList.add("loading");
+            Jimp.read(document.getElementById("imagetest").src)
+                .then(image => {
+                    return image
+                        .sepia() // resize
+                        .quality(60) // set JPEG quality
+                        .getBase64(Jimp.MIME_JPEG, function (err, src) {
+                            document.getElementById("imagetest").src = src
+
+                        });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+            this.disabled = false;
+            document.body.classList.remove("loading");
+        };
+    </script>
+</body>
+
+</html>
